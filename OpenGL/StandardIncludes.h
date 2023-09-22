@@ -2,8 +2,6 @@
 #ifndef STANDARD_INCLUDES_H
 #define STANDARD_INCLUDES_H
 
-//#define GLM_ENABLE_EXPERIMENTAL
-
 // Include standard headers , vector is template standard included in c++
 #include <vector>
 #include <string>
@@ -21,10 +19,12 @@
 #include <GL/glew.h> // Include GLEW
 #include <GLFW/glfw3.h> // Include GLFW
 #include <glm/glm.hpp> // Include GLM
-//#include <glm/ext.hpp> // Open GL Experimental to_string
+#include <glm/ext.hpp>   // Open GL Experimental to_string
 
 #include "Singleton.h"
 
 using namespace std;
+
+#define GLM_ENABLE_EXPERIMENTAL
 
 #endif // !STANDARD_INCLUDES_H
