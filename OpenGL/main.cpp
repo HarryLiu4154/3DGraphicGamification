@@ -180,7 +180,7 @@ static void SubtractVectors()
 static void MultiplyVectors()
 {
     glm::vec3 pos = { 0, 0, 0 };
-    glm::vec3 dest = { 0, 0, 0 };
+    glm::vec3 dest = { 1, 0, 0 };
     glm::vec3 dir = dest - pos;
     dir = glm::normalize(dir);
     pos += (dir * 0.1f);
