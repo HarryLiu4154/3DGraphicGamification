@@ -12,27 +12,27 @@ static void Task1()
     float speed;
 
     try {
-        cout << "Please enter the source coordinates." << endl;
-        cout << "X: ";
+        std::cout << "Please enter the source coordinates." << endl;
+        std::cout << "X: ";
         cin >> sX;
-        cout << "Y: ";
+        std::cout << "Y: ";
         cin >> sY;
-        cout << "Z: ";
+        std::cout << "Z: ";
         cin >> sZ;
 
-        cout << "Please enter the destination coordinates." << endl;
-        cout << "X: ";
+        std::cout << "Please enter the destination coordinates." << endl;
+        std::cout << "X: ";
         cin >> dX;
-        cout << "Y: ";
+        std::cout << "Y: ";
         cin >> dY;
-        cout << "Z: ";
+        std::cout << "Z: ";
         cin >> dZ;
 
-        cout << "Please enter the travel speed per step: ";
+        std::cout << "Please enter the travel speed per step: ";
         cin >> speed;
     }
     catch (...) {
-        cout << "Input error";
+        std::cout << "Input error";
     }
 
     glm::vec3 sVect = { sX, sY, sZ };
@@ -40,7 +40,7 @@ static void Task1()
 
     float steps = glm::distance(sVect, dVect) / speed;
 
-    cout << "It will take the character " << steps << " steps to reach the destination.";
+    std::cout << "It will take the character " << steps << " steps to reach the destination.";
 }
 
 static void Task2()
@@ -50,32 +50,32 @@ static void Task2()
     float cX, cY, cZ;
 
     try {
-        cout << "Please enter the coordinates of object A." << endl;
-        cout << "X: ";
+        std::cout << "Please enter the coordinates of object A." << endl;
+        std::cout << "X: ";
         cin >> aX;
-        cout << "Y: ";
+        std::cout << "Y: ";
         cin >> aY;
-        cout << "Z: ";
+        std::cout << "Z: ";
         cin >> aZ;
 
-        cout << "Please enter the coordinates of object B." << endl;
-        cout << "X: ";
+        std::cout << "Please enter the coordinates of object B." << endl;
+        std::cout << "X: ";
         cin >> bX;
-        cout << "Y: ";
+        std::cout << "Y: ";
         cin >> bY;
-        cout << "Z: ";
+        std::cout << "Z: ";
         cin >> bZ;
 
-        cout << "Please enter the coordinates of object C." << endl;
-        cout << "X: ";
+        std::cout << "Please enter the coordinates of object C." << endl;
+        std::cout << "X: ";
         cin >> cX;
-        cout << "Y: ";
+        std::cout << "Y: ";
         cin >> cY;
-        cout << "Z: ";
+        std::cout << "Z: ";
         cin >> cZ;
     }
     catch (...) {
-        cout << "Input error" << endl;
+        std::cout << "Input error" << endl;
     }
 
     glm::vec3 aVect = { aX, aY, aZ };
@@ -91,8 +91,8 @@ static void Task2()
     float SHeron = perimeter / 2; // Heron's Formula
     float area = sqrt(SHeron * (SHeron - abDistance) * (SHeron - bcDistance) * (SHeron - caDistance));
 
-    cout << "The perimeter is " << perimeter << " units." << endl;
-    cout << "The area is " << area << " units^2." << endl;
+    std::cout << "The perimeter is " << perimeter << " units." << endl;
+    std::cout << "The area is " << area << " units^2." << endl;
 }
 
 static string vec2_to_string(glm::vec2& v) {
@@ -101,6 +101,27 @@ static string vec2_to_string(glm::vec2& v) {
 
 static string vec3_to_string(glm::vec3& v) {
     return "vec3(" + to_string(v.x) + ", " + to_string(v.y) + ", " + to_string(v.z) + ")";
+}
+
+static string mat4_to_string(glm::mat4 m) {
+    string output = "";
+    output += "mat4x4(";
+    
+    for (int i = 0; i < 4; ++i) {
+        output += "(";
+        for (int j = 0; j < 4; ++j) {
+            output += to_string(m[i][j]);
+            if (j != 3) {
+                output += ", ";
+            }
+        }
+        if (i != 3) {
+            output += "), ";
+        } 
+    }
+    output += "))";
+
+    return output;
 }
 
 static void Task3() 
@@ -158,12 +179,12 @@ static void AddVectors()
     glm::vec2 a = { 3, 5 };
     glm::vec2 b = { 2, -1 };
     glm::vec2 c = a + b;
-    cout << vec2_to_string(c) << endl;
+    std::cout << vec2_to_string(c) << endl;
 
     glm::vec3 d = { 3, 5, 1 };
     glm::vec3 e = { 2, -1, -1 };
     glm::vec3 f = d + e;
-    cout << vec3_to_string(f) << endl;
+    std::cout << vec3_to_string(f) << endl;
 }
 
 static void SubtractVectors()
@@ -173,8 +194,8 @@ static void SubtractVectors()
     glm::vec2 c = b - a;
     glm::vec2 d = a - b;
 
-    cout << vec2_to_string(c) << "\tMagnitude: " << glm::length(c) << endl;
-    cout << vec2_to_string(d) << "\tMagnitude: " << glm::length(d) << endl;
+    std::cout << vec2_to_string(c) << "\tMagnitude: " << glm::length(c) << endl;
+    std::cout << vec2_to_string(d) << "\tMagnitude: " << glm::length(d) << endl;
 }
 
 static void MultiplyVectors()
@@ -184,7 +205,7 @@ static void MultiplyVectors()
     glm::vec3 dir = dest - pos;
     dir = glm::normalize(dir);
     pos += (dir * 0.1f);
-    cout << vec3_to_string(pos) << endl;
+    std::cout << vec3_to_string(pos) << endl;
 }
 
 static glm::vec3 pos = { 2, 2, 2 };
@@ -194,7 +215,7 @@ static void MultiplyVectors2()
     glm::vec3 dir = dest - ::pos;
     dir = glm::normalize(dir);
     ::pos += (dir * 0.1f);
-    cout << vec3_to_string(pos) << endl;
+    std::cout << vec3_to_string(pos) << endl;
 }
 
 static void Distance()
@@ -202,7 +223,7 @@ static void Distance()
     glm::vec3 p1 = { 1, 1, 0 };
     glm::vec3 p2 = { 2, 1, 2 };
     float distance = glm::distance(p1, p2);
-    cout << "Distance = " << distance << endl;
+    std::cout << "Distance = " << distance << endl;
 }
 
 static void DotProduct()
@@ -215,7 +236,7 @@ static void DotProduct()
     aVec = glm::normalize(aVec);
     bVec = glm::normalize(bVec);
     float dot = glm::dot(aVec, bVec);
-    cout << "Dot = " << dot << endl;
+    std::cout << "Dot = " << dot << endl;
 }
 
 static void CrossProduct()
@@ -227,7 +248,113 @@ static void CrossProduct()
     glm::vec3 bVec = b - source;
     glm::vec3 cross = glm::cross(aVec, bVec);
     cross = glm::normalize(cross);
-    cout << "Cross = " << vec3_to_string(cross) << endl;
+    std::cout << "Cross = " << vec3_to_string(cross) << endl;
+}
+
+static void MatrixAddition() {
+    glm::mat4 matrix1 =
+    {
+        { 1, 1, 1, 1 }, { 2, 2, 2, 2 },
+        { 3, 3, 3, 3 }, { 4, 4, 4, 4 }
+    };
+    glm::mat4 matrix2 =
+    {
+        { 5, 5, 5, 5 }, { 6, 6, 6, 6 },
+        { 7, 7, 7, 7 }, { 8, 8, 8, 8 }
+    };
+    std::cout << "Matrix1: " << mat4_to_string(matrix1) << endl;
+    std::cout << "Matrix2: " << mat4_to_string(matrix2) << endl;
+    std::cout << "Add M1 to M2: " << mat4_to_string(matrix1 + matrix2) << endl;
+}
+
+static void MatrixSubtraction() {
+    glm::mat4 matrix1 =
+    {
+        { 1, 1, 1, 1 }, { 2, 2, 2, 2 },
+        { 3, 3, 3, 3 }, { 4, 4, 4, 4 }
+    };
+    glm::mat4 matrix2 =
+    {
+        { 5, 5, 5, 5 }, { 6, 6, 6, 6 },
+        { 7, 7, 7, 7 }, { 8, 8, 8, 8 }
+    };
+    std::cout << "Matrix1: " << mat4_to_string(matrix1) << endl;
+    std::cout << "Matrix2: " << mat4_to_string(matrix2) << endl;
+    std::cout << "Subtract M2 from M1: " << mat4_to_string(matrix1 - matrix2) << endl;
+}
+
+static void MatrixMultiplication() {
+    glm::mat4 matrix1 =
+    {
+        { 1, 1, 1, 1 }, { 2, 2, 2, 2 },
+        { 3, 3, 3, 3 }, { 4, 4, 4, 4 }
+    };
+    glm::mat4 matrix2 =
+    {
+        { 5, 5, 5, 5 }, { 6, 6, 6, 6 },
+        { 7, 7, 7, 7 }, { 8, 8, 8, 8 }
+    };
+    std::cout << "Matrix1: " << mat4_to_string(matrix1) << endl;
+    std::cout << "Matrix2: " << mat4_to_string(matrix2) << endl;
+    std::cout << "Multiply M1 and M2: " << mat4_to_string(matrix1 * matrix2) << endl;
+}
+
+static void MatrixMultiplicationNonCommutative() {
+    glm::mat4 matrix1 =
+    {
+        { 1, 1, 1, 1 }, { 2, 2, 2, 2 },
+        { 3, 3, 3, 3 }, { 4, 4, 4, 4 }
+    };
+    glm::mat4 matrix2 =
+    {
+        { 5, 5, 5, 5 }, { 6, 6, 6, 6 },
+        { 7, 7, 7, 7 }, { 8, 8, 8, 8 }
+    };
+    std::cout << "Matrix1: " << mat4_to_string(matrix1) << endl;
+    std::cout << "Matrix2: " << mat4_to_string(matrix2) << endl;
+    std::cout << "Multiply M2 and M1: " << mat4_to_string(matrix2 * matrix1) << endl;
+}
+
+static void MatrixMultiplicationCommutative() {
+    glm::mat4 matrix1 = glm::mat4(1.0f);
+    glm::mat4 matrix2 =
+    {
+        { 5, 5, 5, 5 }, { 6, 6, 6, 6 },
+        { 7, 7, 7, 7 }, { 8, 8, 8, 8 }
+    };
+    std::cout << "Matrix1: " << mat4_to_string(matrix1) << endl;
+    std::cout << "Matrix2: " << mat4_to_string(matrix2) << endl;
+    std::cout << "Multiply M1 and M2: " << mat4_to_string(matrix1 * matrix2) << endl;
+    std::cout << "Multiply M2 and M1: " << mat4_to_string(matrix2 * matrix1) << endl;
+}
+
+static void MatrixTranslate() {
+    glm::mat4 matrix1 = glm::mat4(1.0f);
+    glm::vec3 pos1 = { 0, 0, 0 };
+    matrix1 = glm::translate(matrix1, pos1);
+    std::cout << "Transformation Matrix 1: " << mat4_to_string(matrix1) << endl;
+
+    glm::mat4 matrix2 = glm::mat4(1.0f);
+    glm::vec3 pos2 = { 1, 2, 3 };
+    matrix1 = glm::translate(matrix2, pos2);
+    std::cout << "Transformation Matrix 2: " << mat4_to_string(matrix2) << endl;
+}
+
+static void MatrixScale()
+{
+    glm::mat4 matrix = glm::mat4(1.0f);
+    glm::vec3 scale = { 2, 2, 2 };
+    matrix = glm::scale(matrix, scale);
+    std::cout << "Scale matrix: " << mat4_to_string(matrix) << endl;
+}
+
+static void MatrixRotation()
+{
+    glm::mat4 matrix = glm::mat4(1.0f);
+    float angle = 0.1f;
+    glm::vec3 axis = { 0, 1, 0 };
+    matrix = glm::rotate(matrix, angle, axis);
+    std::cout << "Rotation matrix: " << mat4_to_string(matrix) << endl;
 }
 
 int main(void)
@@ -239,7 +366,7 @@ int main(void)
     //Task2();
     //Task3();
 
-    AddVectors();
+    /*AddVectors();
     SubtractVectors();
     MultiplyVectors();
     
@@ -249,7 +376,14 @@ int main(void)
 
     Distance();
     DotProduct();
-    CrossProduct();
+    CrossProduct();*/
+
+    MatrixAddition();
+    MatrixSubtraction();
+    MatrixMultiplication();
+    MatrixMultiplicationNonCommutative();
+    MatrixMultiplicationCommutative();
+    MatrixTranslate();
 
     return 0;
 }
