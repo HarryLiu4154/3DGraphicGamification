@@ -15,6 +15,7 @@ class WindowController : public Singleton<WindowController>
 
 		// Methods
 		void NewWindow();
+		Resolution GetResolution();
 
 	private:
 		// Members

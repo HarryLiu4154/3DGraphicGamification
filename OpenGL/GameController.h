@@ -5,6 +5,8 @@
 #include "Singleton.h"
 #include "Shader.h"
 #include "Mesh.h"
+#include "WindowController.h"
+#include "Camera.h"
 
 class GameController : public Singleton<GameController>
 {
@@ -19,6 +21,7 @@ class GameController : public Singleton<GameController>
 
 	private:
 		Shader m_shader;
+		Camera m_camera;
 		Mesh m_mesh;
 };
 

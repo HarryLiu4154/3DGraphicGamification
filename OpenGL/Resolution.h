@@ -1,4 +1,4 @@
-#ifdef RESOLUTION_H
+#ifndef RESOLUTION_H
 #define RESOLUTION_H
 
 struct Resolution
