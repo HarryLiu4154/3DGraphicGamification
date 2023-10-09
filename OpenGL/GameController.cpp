@@ -20,6 +20,7 @@ void GameController::Initialize()
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE); // Ensure we can capture the escape key
 	//glClearColor(0.0f, 0.0f, 0.4f, 0.0f); // Dark blue background
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f); // Black background
+	glEnable(GL_CULL_FACE);
 
 	// Create a default perspective camera
 	m_camera = Camera(WindowController::GetInstance().GetResolution());

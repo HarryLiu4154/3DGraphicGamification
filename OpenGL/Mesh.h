@@ -21,7 +21,7 @@ class Mesh
 		Shader* m_shader;
 		GLuint m_vertexBuffer; // GPU buffer (VRAM)
 		GLuint m_indexBuffer; // GPU buffer (VRAM)
-		std::vector<GLfloat> m_vertexData; //  Store vertext data in RAM
+		std::vector<GLfloat> m_vertexData; //  Store vertex data in RAM
 		std::vector<GLubyte> m_indexData; // Store index data in RAM
 		glm::mat4 m_world;
 };
