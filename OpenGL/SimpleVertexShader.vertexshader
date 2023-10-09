@@ -1,4 +1,4 @@
-#version 120 // OpenGL version 2.1 (minimum requirement)
+#version 330 // OpenGL version 2.1 (minimum requirement)
 
 in vec3 vertices; // Value sent from application to this attribute
 in vec4 colors; // Input color from application
