@@ -30,9 +30,9 @@ void Mesh::Create(Shader* _shader)
 		0.0f, -b, a, 0.502f, 0.0f, 0.502f, 1.0f,
 		0.0f, -b, -a, 1.0f, 1.0f, 1.0f, 1.0f,
 		b, a, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
-		-b, a, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+		-b, a, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
 		b, -a, 0.0f, 0.118f, 0.565f, 1.0f, 1.0f,
-		-b, -a , 0.0f, 0.863f, 0.078f, 0.235f, 1.0f,
+		-b, -a, 0.0f, 0.863f, 0.078f, 0.235f, 1.0f,
 	};
 	
 	/*  Position  */ /*     RGBA Color     */
@@ -60,7 +60,7 @@ void Mesh::Create(Shader* _shader)
 	};
 
 	glGenBuffers(1, &m_indexBuffer);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_vertexBuffer);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indexBuffer);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_indexData.size() * sizeof(GLubyte), m_indexData.data(), GL_STATIC_DRAW);
 }
 
