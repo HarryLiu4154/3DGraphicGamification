@@ -22,6 +22,7 @@ class Mesh
 	private:
 		Shader* m_shader;
 		Texture m_texture;
+		Texture m_texture2;
 		GLuint m_vertexBuffer; // GPU buffer (VRAM)
 		GLuint m_indexBuffer; // GPU buffer (VRAM)
 		std::vector<GLfloat> m_vertexData; //  Store vertex data in RAM

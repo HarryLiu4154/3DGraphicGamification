@@ -17,6 +17,7 @@ class Shader
 		GLuint GetAttrColors() { return m_attrColors; }
 		GLuint GetAttrTexCoords() { return m_attrTexCoords; }
 		GLuint GetSampler1() { return m_sampler1; }
+		GLuint GetSampler2() { return m_sampler2; }
 		GLuint GetAttrWVP() { return m_attrWVP; }
 
 		// Methods
@@ -38,6 +39,7 @@ class Shader
 		GLuint m_attrTexCoords;
 		GLuint m_attrWVP;
 		GLuint m_sampler1;
+		GLuint m_sampler2;
 		GLint m_result = GL_FALSE;
 		int m_infoLogLength;
 };
