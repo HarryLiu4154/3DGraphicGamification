@@ -16,7 +16,7 @@ class Shader
 		GLuint GetAttrVertices() { return m_attrVertices; }
 		GLuint GetAttrColors() { return m_attrColors; }
 		GLuint GetAttrTexCoords() { return m_attrTexCoords; }
-		GLuint GetSampler() { return m_sampler1; }
+		GLuint GetSampler1() { return m_sampler1; }
 		GLuint GetAttrWVP() { return m_attrWVP; }
 
 		// Methods

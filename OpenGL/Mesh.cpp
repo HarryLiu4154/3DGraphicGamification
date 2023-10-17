@@ -25,8 +25,8 @@ void Mesh::Create(Shader* _shader)
 	// 3 position, 3 rgb, 2 texture coords
 	m_vertexData = {
 		50.0f, 50.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, // top-right
-		50.0f, -50.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f, // bottom-right
-		-50.0f, -50.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, // bottom-left
+		50.0f, -50.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, // bottom-right
+		-50.0f, -50.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // bottom-left
 		-50.0f, 50.0f, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f // top-left
 	};
 
@@ -92,7 +92,11 @@ void Mesh::Render(glm::mat4 _wvp)
 
 	glBindBuffer(GL_ARRAY_BUFFER, m_vertexBuffer); // Bind the vertex buffer
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indexBuffer); // Bind the index buffer
+	
+	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, m_texture.GetTexture());
+	glUniform1i(m_shader->GetSampler1(), 0);
+
 
 	glDrawElements(GL_TRIANGLES, m_indexData.size(), GL_UNSIGNED_BYTE, (void*)0);
 	

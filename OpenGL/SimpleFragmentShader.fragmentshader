@@ -16,5 +16,5 @@ void main()
 	//gl_FragColor = vec4(RenderRedChannel, RenderGreenChannel, RenderBlueChannel, 1.0); // Output color = red
 	//gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
 
-	FragColor = texture(sampler1, retTexCoord); // Example 1: Texture only
+	FragColor = texture(sampler1, retTexCoord) * vec4(retColor, 1.0f); // Example 2: Texture and color only
 }
