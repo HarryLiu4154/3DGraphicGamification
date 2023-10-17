@@ -1,16 +1,20 @@
-#version 330 // OpenGL version 2.1 (minimum requirement)
+#version 330
 
 // uniform int RenderRedChannel;
 // uniform int RenderGreenChannel;
 // uniform int RenderBlueChannel;
 
-in vec4 retColor; // Must use same name as out variable used by vertext shader
+in vec3 retColor; // Must use same name as out variable used by vertex shader
+in vec2 retTexCoord;
+
 out vec4 FragColor;
+
+uniform sampler2D sampler1;
 
 void main()
 {
 	//gl_FragColor = vec4(RenderRedChannel, RenderGreenChannel, RenderBlueChannel, 1.0); // Output color = red
 	//gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
 
-	FragColor = retColor;
+	FragColor = texture(sampler1, retTexCoord); // Example 1: Texture only
 }
