@@ -45,7 +45,3 @@ class Shader
 };
 
 #endif // !SHADER_H
-
-
-
-

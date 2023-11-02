@@ -26,7 +26,3 @@ class GameController : public Singleton<GameController>
 };
 
 #endif // !GAME_CONTROLLER_H
-
-
-
-
