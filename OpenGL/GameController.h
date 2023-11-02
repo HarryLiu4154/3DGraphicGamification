@@ -20,9 +20,11 @@ class GameController : public Singleton<GameController>
 		void RunGame();
 
 	private:
-		Shader m_shader;
+		Shader m_shaderColor;
+		Shader m_shaderDiffuse;
 		Camera m_camera;
-		Mesh m_mesh;
+		Mesh m_meshBox;
+		Mesh m_meshLight;
 };
 
 #endif // !GAME_CONTROLLER_H

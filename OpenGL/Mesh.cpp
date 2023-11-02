@@ -10,10 +10,22 @@ Mesh::Mesh()
 	m_indexBuffer = 0;
 	m_position = { 0, 0, 0 };
 	m_rotation = { 0, 0, 0 };
+	m_scale = { 1, 1, 1 };
+	m_world = glm::mat4();
+	m_lightPosition = { 0, 0, 0 };
+	m_lightColor = { 1, 1, 1 };
 }
 
 Mesh::~Mesh()
 {
+}
+
+void Mesh::Cleanup()
+{
+	//glDeleteBuffers(1, &m_indexBuffer);
+	glDeleteBuffers(1, &m_vertexBuffer);
+	m_texture.CleanUp();
+	m_texture2.CleanUp();
 }
 
 void Mesh::Create(Shader* _shader)
@@ -25,6 +37,7 @@ void Mesh::Create(Shader* _shader)
 	m_texture2 = Texture();
 	m_texture2.LoadTexture("../Assets/Textures/Emoji.jpg");
 
+#pragma region VertexData
 	// 3 position, 3 normals, 2 texture coords
 	m_vertexData = {
 		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 0.0f, 0.0f,
@@ -64,84 +77,95 @@ void Mesh::Create(Shader* _shader)
 		-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f, 0.0f, 0.0f,
 		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f, 0.0f, 1.0f
 	};
+#pragma endregion
 
 	glGenBuffers(1, &m_vertexBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, m_vertexBuffer);
 	glBufferData(GL_ARRAY_BUFFER, m_vertexData.size() * sizeof(float), m_vertexData.data(), GL_STATIC_DRAW);
 
-	m_indexData = {
+	/*m_indexData = {
 		2, 0, 3, 2, 1, 0
 	};
 
 	glGenBuffers(1, &m_indexBuffer);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indexBuffer);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_indexData.size() * sizeof(GLubyte), m_indexData.data(), GL_STATIC_DRAW);
+	*/
 }
 
-void Mesh::Cleanup()
+void Mesh::BindAttributes()
 {
-	glDeleteBuffers(1, &m_indexBuffer);
-	glDeleteBuffers(1, &m_vertexBuffer);
-	m_texture.CleanUp();
-	m_texture2.CleanUp();
-}
-
-void Mesh::Render(glm::mat4 _wvp)
-{
-	glUseProgram(m_shader->GetProgramID()); // Use our shader
-	m_shader->SetVec3("AmbientLight", { 0.1f, 0.1f, 0.1f });
-	m_shader->SetVec3("DiffuseColor", { 1.0f, 1.0f, 1.0f }); // Set diffuse color to red
-	m_shader->SetVec3("LightDirection", { 1.0f, 0.5f, 0.0f }); // Set light direction
-	m_shader->SetVec3("LightColor", { 0.5f, 0.9f, 0.5f }); // Set light color
-
-	// First attribute buffer : vertices
+	// 1st attribute buffer : vertices
 	glEnableVertexAttribArray(m_shader->GetAttrVertices());
-	glVertexAttribPointer(m_shader->GetAttrVertices(), // The attribute we want to configure
-		3, // size (3 vertices per primitive)
-		GL_FLOAT, // type
-		GL_FALSE, // normalized?
-		8 * sizeof(float), // stride (8 floats per vertex definition)
-		(void*)0); // offset
+	glVertexAttribPointer(
+		m_shader->GetAttrVertices(),	// The attribute we want to configure
+		3,								// size (3 components)
+		GL_FLOAT,						// type
+		GL_FALSE,						// normalized?
+		8 * sizeof(float),				// stride (8 floats per vertex definition)
+		(void*)0						// offset
+	);			
 
 	// 2nd attribute buffer : normals
 	glEnableVertexAttribArray(m_shader->GetAttrNormals());
 	glVertexAttribPointer(
-		m_shader->GetAttrNormals(), // The attribute we want to configure
-		3, // size (3 vertices per primitive)
-		GL_FLOAT, // type
-		GL_FALSE, // normalized?
-		8 * sizeof(float), // stride (8 floats per vertex definition)
-		(void*)(3 * sizeof(float)) // array buffer offset
+		m_shader->GetAttrNormals(),		// The attribute we want to configure
+		3,								// size (3 components)
+		GL_FLOAT,						// type
+		GL_FALSE,						// normalized?
+		8 * sizeof(float),				// stride (8 floats per vertex definition)
+		(void*)(3 * sizeof(float))		// offset
 	);
 
-	// 3rd attribute : texCoords
+	// 3rd attribute buffer : texCoords
 	glEnableVertexAttribArray(m_shader->GetAttrTexCoords());
 	glVertexAttribPointer(
-		m_shader->GetAttrTexCoords(), // The attribute we want to configure
-		2, // size (3 vertices per primitive)
-		GL_FLOAT, // type
-		GL_FALSE, // normalized?
-		8 * sizeof(float), // stride (8 floats per vertex definition)
-		(void*)(6 * sizeof(float)) // array buffer offset
+		m_shader->GetAttrTexCoords(),	// The attribute we want to configure
+		2,								// size (2 components)
+		GL_FLOAT,						// type
+		GL_FALSE,						// normalized?
+		8 * sizeof(float),				// stride (8 floats per vertex definition)
+		(void*)(6 * sizeof(float))		// offset
 	);
 
-	// 4th attribute : WVP
-	m_rotation.y += 0.005f;
-	glm::mat4 translate = glm::translate(_wvp, m_position);
-	glm::mat4 transform = glm::rotate(translate, m_rotation.y, glm::vec3(0, 1, 0));
-	glUniformMatrix4fv(m_shader->GetAttrWVP(), 1, GL_FALSE, &transform[0][0]);
-
 	glBindBuffer(GL_ARRAY_BUFFER, m_vertexBuffer); // Bind the vertex buffer
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indexBuffer); // Bind the index buffer
-	
+
+	// 1st Texture
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, m_texture.GetTexture());
 	glUniform1i(m_shader->GetSampler1(), 0);
-	// --------------- Second Texture
+	// 2nd Texture
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, m_texture2.GetTexture());
 	glUniform1i(m_shader->GetSampler2(), 1);
+}
 
+void Mesh::CalculateTransform()
+{
+	m_world = glm::translate(glm::mat4(1.0f), m_position);
+	m_world = glm::rotate(m_world, m_rotation.y, glm::vec3(0, 1, 0));
+	m_world = glm::scale(m_world, m_scale);
+}
+
+void Mesh::SetShaderVariables(glm::mat4 _pv)
+{
+	m_shader->SetMat4("World", m_world);
+	m_shader->SetVec3("AmbientLight", { 0.1f, 0.1f, 0.1f });
+	m_shader->SetVec3("DiffuseColor", { 1.0f, 1.0f, 1.0f });
+	m_shader->SetVec3("LightPosition", m_lightPosition);
+	m_shader->SetVec3("LightColor", m_lightColor);
+	m_shader->SetMat4("WVP", _pv * m_world);
+}
+
+void Mesh::Render(glm::mat4 _pv)
+{
+	glUseProgram(m_shader->GetProgramID()); // Use our shader
+	
+	m_rotation.y += 0.005f;
+
+	CalculateTransform();
+	SetShaderVariables(_pv);
+	BindAttributes();
 
 	//glDrawElements(GL_TRIANGLES, m_indexData.size(), GL_UNSIGNED_BYTE, (void*)0);
 	glDrawArrays(GL_TRIANGLES, 0, m_vertexData.size());
@@ -149,12 +173,4 @@ void Mesh::Render(glm::mat4 _wvp)
 	glDisableVertexAttribArray(m_shader->GetAttrNormals());
 	glDisableVertexAttribArray(m_shader->GetAttrVertices());
 	glDisableVertexAttribArray(m_shader->GetAttrTexCoords());
-
-
-	//glEnableVertexAttribArray(0);
-	//glBindBuffer(GL_ARRAY_BUFFER, m_vertexBuffer);
-	//glVertexAttribPointer(0, 3/*size*/, GL_FLOAT/*type*/, GL_FALSE/*normalized*/, 0/*stride*/, (void*)0/*offset*/);
-	// Draw the triangle
-	//glDrawArrays(GL_TRIANGLES, 0, 3); // starting from vertex 0, 3 vertices = 1 triangle
-	//glDisableVertexAttribArray(0);
 }
