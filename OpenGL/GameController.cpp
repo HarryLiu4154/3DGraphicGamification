@@ -43,7 +43,7 @@ void GameController::RunGame()
 	// Create meshes
 	m_meshLight = Mesh();
 	m_meshLight.Create(&m_shaderColor);
-	m_meshLight.SetPosition({ 1.0f, 0.5f, 0.5f });
+	m_meshLight.SetPosition({ 1.0f, -0.5f, 0.0f });
 	m_meshLight.SetScale({ 0.1f, 0.1f, 0.1f });
 
 	m_meshBox = Mesh();

@@ -1,7 +1,7 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include "../OpenGL/StandardIncludes.h"
+#include "StandardIncludes.h"
 
 class Camera
 {
@@ -23,6 +23,3 @@ class Camera
 };
 
 #endif // !CAMERA_H
-
-
-

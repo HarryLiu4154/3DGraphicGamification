@@ -33,9 +33,9 @@ void Mesh::Create(Shader* _shader)
 	m_shader = _shader;
 
 	m_texture = Texture();
-	m_texture.LoadTexture("../Assets/Textures/Wood.jpg");
+	m_texture.LoadTexture("../Assets/Textures/MetalFrameWood.jpg");
 	m_texture2 = Texture();
-	m_texture2.LoadTexture("../Assets/Textures/Emoji.jpg");
+	m_texture2.LoadTexture("../Assets/Textures/MetalFrame.jpg");
 
 #pragma region VertexData
 	// 3 position, 3 normals, 2 texture coords
@@ -129,15 +129,6 @@ void Mesh::BindAttributes()
 	);
 
 	glBindBuffer(GL_ARRAY_BUFFER, m_vertexBuffer); // Bind the vertex buffer
-
-	// 1st Texture
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, m_texture.GetTexture());
-	glUniform1i(m_shader->GetSampler1(), 0);
-	// 2nd Texture
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, m_texture2.GetTexture());
-	glUniform1i(m_shader->GetSampler2(), 1);
 }
 
 void Mesh::CalculateTransform()
@@ -150,21 +141,27 @@ void Mesh::CalculateTransform()
 void Mesh::SetShaderVariables(glm::mat4 _pv)
 {
 	m_shader->SetMat4("World", m_world);
-	m_shader->SetVec3("AmbientLight", { 0.1f, 0.1f, 0.1f });
-	m_shader->SetVec3("DiffuseColor", { 1.0f, 1.0f, 1.0f });
-	m_shader->SetFloat("SpecularStrength", 4);
-	m_shader->SetVec3("SpecularColor", { 3.0f, 3.0f, 3.0f });
-	m_shader->SetVec3("LightPosition", m_lightPosition);
-	m_shader->SetVec3("LightColor", m_lightColor);
 	m_shader->SetMat4("WVP", _pv * m_world);
 	m_shader->SetVec3("CameraPosition", m_cameraPosition);
+
+	// Configure light
+	m_shader->SetVec3("light.position", m_lightPosition);
+	m_shader->SetVec3("light.color", m_lightColor);
+	m_shader->SetVec3("light.ambientColor", { 0.1f, 0.1f, 0.1f });
+	m_shader->SetVec3("light.diffuseColor", { 1.0f, 1.0f, 1.0f });
+	m_shader->SetVec3("light.specularColor", { 3.0f, 3.0f, 3.0f });
+
+	// Configure material
+	m_shader->SetFloat("light.specularStrength", 8);
+	m_shader->SetTextureSampler("material.diffuseTexture", GL_TEXTURE0, 0, m_texture.GetTexture());
+	m_shader->SetTextureSampler("material.specularTexture", GL_TEXTURE1, 1, m_texture2.GetTexture());
 }
 
 void Mesh::Render(glm::mat4 _pv)
 {
 	glUseProgram(m_shader->GetProgramID()); // Use our shader
 	
-	m_rotation.y += 0.005f;
+	m_rotation.y += 0.001f;
 
 	CalculateTransform();
 	SetShaderVariables(_pv);
