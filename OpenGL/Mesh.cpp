@@ -159,7 +159,7 @@ void Mesh::SetShaderVariables(glm::mat4 _pv)
 	m_shader->SetVec3("light.position", m_lightPosition);
 	m_shader->SetVec3("light.direction", glm::normalize(glm::vec3({ 0, 0, 0 }) - m_lightPosition));
 	m_shader->SetFloat("light.coneAngle", glm::radians(15.0f));
-	m_shader->SetFloat("light.fallout", 100);
+	m_shader->SetFloat("light.falloff", 100);
 
 	// Configure material
 	m_shader->SetFloat("material.specularStrength", 8);
