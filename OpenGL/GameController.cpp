@@ -69,6 +69,11 @@ void GameController::RunGame()
 		for (unsigned int count = 0; count < m_meshBoxes.size(); ++count) {
 			m_meshBoxes[count].Render(m_camera.GetProjection() * m_camera.GetView());
 		}
+
+		for (unsigned int count = 0; count < Mesh::Lights.size(); ++count) {
+			Mesh::Lights[count].Render(m_camera.GetProjection() * m_camera.GetView());
+		}
+
 		m_meshLight.Render(m_camera.GetProjection() * m_camera.GetView());
 		glfwSwapBuffers(win); // Swap the front and back buffers
 		glfwPollEvents();
@@ -78,6 +83,9 @@ void GameController::RunGame()
 	m_meshLight.Cleanup();
 	for (unsigned int count = 0; count < m_meshBoxes.size(); ++count) {
 		m_meshBoxes[count].Cleanup();
+	}
+	for (unsigned int count = 0; count < Mesh::Lights.size(); ++count) {
+		Mesh::Lights[count].Cleanup();
 	}
 	m_shaderDiffuse.CleanUp();
 	m_shaderColor.CleanUp();
