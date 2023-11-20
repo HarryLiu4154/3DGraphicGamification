@@ -43,25 +43,19 @@ void GameController::RunGame()
 	m_shaderDiffuse.LoadShaders("Diffuse.vertexshader", "Diffuse.fragmentshader");
 
 	// Create meshes
-	for (int count = 0; count < 4; count++) {
-		Mesh m = Mesh();
-		m.Create(&m_shaderColor);
-		m.SetPosition({ 0.5f + (float)count / 10.0f, 0.0f, -0.5f });
-		m.SetColor({ glm::linearRand(0.0f, 1.0f), glm::linearRand(0.0f, 1.0f), glm::linearRand(0.0f, 1.0f) });
-		m.SetScale({ 0.1f, 0.1f, 0.1f });
-		Mesh::Lights.push_back(m);
-	}
+	Mesh m = Mesh();
+	m.Create(&m_shaderColor, "../Assets/Models/teapot.obj");
+	m.SetPosition({ 1.0f, 0.0f, 0.0f });
+	m.SetColor({ 1.0f, 1.0f, 1.0f });
+	m.SetScale({ 0.01f, 0.01f, 0.01f });
+	Mesh::Lights.push_back(m);
 
-	for (int col = 0; col < 10; col++) {
-		for (int count = 0; count < 10; count++) {
-			Mesh box = Mesh();
-			box.Create(&m_shaderDiffuse);
-			box.SetCameraPosition(m_camera.GetPosition());
-			box.SetScale({ 0.1f, 0.1f, 0.1f });
-			box.SetPosition({ 0.0f, -0.5f + (float)count / 10.0f, -0.2f + (float)col / 10.0f });
-			m_meshBoxes.push_back(box);
-		}
-	}
+	Mesh teapot = Mesh();
+	teapot.Create(&m_shaderDiffuse, "../Asserts/Models/teapot.obj");
+	teapot.SetCameraPosition(m_camera.GetPosition());
+	teapot.SetScale({ 0.02f, 0.02f, 0.02f });
+	teapot.SetPosition({ 0.0f, 0.0f, 0.0f });
+	m_meshBoxes.push_back(teapot);
 
 	GLFWwindow* win = WindowController::GetInstance().GetWindow();
 	do {
@@ -74,18 +68,16 @@ void GameController::RunGame()
 			Mesh::Lights[count].Render(m_camera.GetProjection() * m_camera.GetView());
 		}
 
-		//m_meshLight.Render(m_camera.GetProjection() * m_camera.GetView());
 		glfwSwapBuffers(win); // Swap the front and back buffers
 		glfwPollEvents();
 	} while (glfwGetKey(win, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(win) == 0);
 	// While escape is not pressed and window has not closed
-
-	m_meshLight.Cleanup();
-	for (unsigned int count = 0; count < m_meshBoxes.size(); ++count) {
-		m_meshBoxes[count].Cleanup();
-	}
+	
 	for (unsigned int count = 0; count < Mesh::Lights.size(); ++count) {
 		Mesh::Lights[count].Cleanup();
+	}
+	for (unsigned int count = 0; count < m_meshBoxes.size(); ++count) {
+		m_meshBoxes[count].Cleanup();
 	}
 	m_shaderDiffuse.CleanUp();
 	m_shaderColor.CleanUp();
