@@ -76,6 +76,8 @@ void Mesh::Create(Shader* _shader, string _file)
 
 void Mesh::BindAttributes()
 {
+	glBindBuffer(GL_ARRAY_BUFFER, m_vertexBuffer); // Bind the vertex buffer
+	
 	// 1st attribute buffer : vertices
 	glEnableVertexAttribArray(m_shader->GetAttrVertices());
 	glVertexAttribPointer(
@@ -109,7 +111,7 @@ void Mesh::BindAttributes()
 		(void*)(6 * sizeof(float))		// offset
 	);
 
-	glBindBuffer(GL_ARRAY_BUFFER, m_vertexBuffer); // Bind the vertex buffer
+	
 }
 
 void Mesh::CalculateTransform()
