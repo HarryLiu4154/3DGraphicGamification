@@ -7,6 +7,7 @@
 // Include standard headers , vector is template standard included in c++
 #include <vector>
 #include <string>
+#include <map>
 #include <fstream>
 #include <iostream>
 
@@ -23,6 +24,10 @@
 #include <glm/glm.hpp> // Include GLM
 #include <glm/ext.hpp> // Open GL Experimental to_string
 #include <glm/gtc/matrix_transform.hpp> // View / Projection
+
+// Font includes
+#include <ft2build.h>
+#include FT_FREETYPE_H
 
 #include "Resolution.h"
 #include "Singleton.h"
