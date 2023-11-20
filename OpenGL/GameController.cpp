@@ -51,7 +51,7 @@ void GameController::RunGame()
 	Mesh::Lights.push_back(m);
 
 	Mesh teapot = Mesh();
-	teapot.Create(&m_shaderDiffuse, "../Asserts/Models/teapot.obj");
+	teapot.Create(&m_shaderDiffuse, "../Assets/Models/teapot.obj");
 	teapot.SetCameraPosition(m_camera.GetPosition());
 	teapot.SetScale({ 0.02f, 0.02f, 0.02f });
 	teapot.SetPosition({ 0.0f, 0.0f, 0.0f });
