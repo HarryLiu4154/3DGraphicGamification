@@ -23,7 +23,7 @@ void GameController::Initialize()
 	//glClearColor(0.0f, 0.0f, 0.4f, 0.0f); // Dark blue background
 	//glClearColor(0.0f, 0.0f, 0.0f, 0.0f); // Black background
 	glClearColor(0.1f, 0.1f, 0.1f, 0.0f); // Grey background
-	glEnable(GL_DEPTH_TEST);
+	// glEnable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	srand(time(0));
