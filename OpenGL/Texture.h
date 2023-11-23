@@ -23,6 +23,9 @@ class Texture
 		int m_height;
 		int m_channels;
 		GLuint m_texture;
+
+		// Methods
+		bool EndsWith(const std::string& _str, const std::string& _suffix);
 };
 
 #endif

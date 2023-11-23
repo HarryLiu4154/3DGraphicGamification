@@ -23,7 +23,7 @@ void GameController::Initialize()
 	//glClearColor(0.0f, 0.0f, 0.4f, 0.0f); // Dark blue background
 	//glClearColor(0.0f, 0.0f, 0.0f, 0.0f); // Black background
 	glClearColor(0.1f, 0.1f, 0.1f, 0.0f); // Grey background
-	// glEnable(GL_DEPTH_TEST);
+	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	srand(time(0));
@@ -68,6 +68,13 @@ void GameController::RunGame()
 	box.SetScale({ 0.5f, 0.5f, 0.5f });
 	box.SetPosition({ -1.0f, -1.0f, -1.0f });
 	m_meshes.push_back(box);
+
+	Mesh plane = Mesh();
+	plane.Create(&m_shaderDiffuse, "../Assets/Models/Plane.obj");
+	plane.SetCameraPosition(m_camera.GetPosition());
+	plane.SetScale({ 0.3f, 0.3f, 0.3f });
+	plane.SetPosition({ 0.0f, 0.0f, 0.0f });
+	m_meshes.push_back(plane);
 #pragma endregion CreateMeshes
 
 	/*Fonts f = Fonts();
