@@ -24,7 +24,7 @@ class GameController : public Singleton<GameController>
 		Shader m_shaderDiffuse;
 		Shader m_shaderFont;
 		Camera m_camera;
-		vector<Mesh> m_meshBoxes;
+		vector<Mesh> m_meshes;
 };
 
 #endif // !GAME_CONTROLLER_H

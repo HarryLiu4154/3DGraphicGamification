@@ -8,7 +8,7 @@ GameController::GameController()
 	m_shaderColor = { };
 	m_shaderDiffuse = { };
 	m_camera = { };
-	m_meshBoxes.clear(); // Not really needed but can't hurt
+	m_meshes.clear(); // Not really needed but can't hurt
 }
 
 GameController::~GameController()
@@ -46,6 +46,7 @@ void GameController::RunGame()
 	m_shaderFont = Shader();
 	m_shaderFont.LoadShaders("Font.vertexshader", "Font.fragmentshader");
 
+#pragma region CreateMeshes
 	// Create meshes
 	Mesh m = Mesh();
 	m.Create(&m_shaderColor, "../Assets/Models/teapot.obj");
@@ -59,23 +60,31 @@ void GameController::RunGame()
 	teapot.SetCameraPosition(m_camera.GetPosition());
 	teapot.SetScale({ 0.02f, 0.02f, 0.02f });
 	teapot.SetPosition({ 0.0f, 0.0f, 0.0f });
-	m_meshBoxes.push_back(teapot);
+	m_meshes.push_back(teapot);
 
-	Fonts f = Fonts();
-	f.Create(&m_shaderFont, "arial.ttf", 100);
+	Mesh box = Mesh();
+	box.Create(&m_shaderDiffuse, "../Assets/Models/Cube.obj");
+	box.SetCameraPosition(m_camera.GetPosition());
+	box.SetScale({ 0.5f, 0.5f, 0.5f });
+	box.SetPosition({ -1.0f, -1.0f, -1.0f });
+	m_meshes.push_back(box);
+#pragma endregion CreateMeshes
+
+	/*Fonts f = Fonts();
+	f.Create(&m_shaderFont, "arial.ttf", 100);*/
 
 	GLFWwindow* win = WindowController::GetInstance().GetWindow();
 	do {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear the screen and depth buffer
-		for (unsigned int count = 0; count < m_meshBoxes.size(); ++count) {
-			m_meshBoxes[count].Render(m_camera.GetProjection() * m_camera.GetView());
+		for (unsigned int count = 0; count < m_meshes.size(); ++count) {
+			m_meshes[count].Render(m_camera.GetProjection() * m_camera.GetView());
 		}
 
 		for (unsigned int count = 0; count < Mesh::Lights.size(); ++count) {
 			Mesh::Lights[count].Render(m_camera.GetProjection() * m_camera.GetView());
 		}
 
-		f.RenderText("Testing text", 10, 500, 0.5f, { 1.0f, 1.0f, 0.0f });
+		// f.RenderText("Testing text", 10, 500, 0.5f, { 1.0f, 1.0f, 0.0f });
 
 		glfwSwapBuffers(win); // Swap the front and back buffers
 		glfwPollEvents();
@@ -85,8 +94,8 @@ void GameController::RunGame()
 	for (unsigned int count = 0; count < Mesh::Lights.size(); ++count) {
 		Mesh::Lights[count].Cleanup();
 	}
-	for (unsigned int count = 0; count < m_meshBoxes.size(); ++count) {
-		m_meshBoxes[count].Cleanup();
+	for (unsigned int count = 0; count < m_meshes.size(); ++count) {
+		m_meshes[count].Cleanup();
 	}
 	m_shaderDiffuse.CleanUp();
 	m_shaderColor.CleanUp();
