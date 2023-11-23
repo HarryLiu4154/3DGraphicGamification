@@ -26,6 +26,8 @@ void GameController::Initialize()
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_FRONT);
 	srand(time(0));
 
 	// Create a default perspective camera
@@ -55,12 +57,12 @@ void GameController::RunGame()
 	m.SetScale({ 0.01f, 0.01f, 0.01f });
 	Mesh::Lights.push_back(m);
 
-	Mesh teapot = Mesh();
+	/*Mesh teapot = Mesh();
 	teapot.Create(&m_shaderDiffuse, "../Assets/Models/teapot.obj");
 	teapot.SetCameraPosition(m_camera.GetPosition());
 	teapot.SetScale({ 0.02f, 0.02f, 0.02f });
 	teapot.SetPosition({ 0.0f, 0.0f, 0.0f });
-	m_meshes.push_back(teapot);
+	m_meshes.push_back(teapot); */
 
 	Mesh box = Mesh();
 	box.Create(&m_shaderDiffuse, "../Assets/Models/Cube.obj");
@@ -69,7 +71,7 @@ void GameController::RunGame()
 	box.SetPosition({ -1.0f, -1.0f, -1.0f });
 	m_meshes.push_back(box);
 
-	Mesh plane = Mesh();
+	/*Mesh plane = Mesh();
 	plane.Create(&m_shaderDiffuse, "../Assets/Models/Plane.obj");
 	plane.SetCameraPosition(m_camera.GetPosition());
 	plane.SetScale({ 0.3f, 0.3f, 0.3f });
@@ -81,7 +83,7 @@ void GameController::RunGame()
 	window.SetCameraPosition(m_camera.GetPosition());
 	window.SetScale({ 0.1f, 0.1f, 0.1f });
 	window.SetPosition({ 0.0f, 0.0f, 0.0f });
-	m_meshes.push_back(window);
+	m_meshes.push_back(window);*/
 #pragma endregion CreateMeshes
 
 	/*Fonts f = Fonts();
