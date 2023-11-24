@@ -44,7 +44,8 @@ void main()
 		vec3 refl = reflect(-lightDir, retNormal);
 		float specularStrength = pow(max(dot(retViewDirection, refl), 0.0f), material.specularStrength);
 
-		vec3 ambient = diffColor.rgb * light[i].ambientColor / NR_LIGHTS;
+		//vec3 ambient = diffColor.rgb * light[i].ambientColor / NR_LIGHTS;
+		vec3 ambient = diffColor.rgb;
 		vec3 lambertian = lambertianStrength * diffColor.rgb * light[i].diffuseColor;
 		vec3 specular = specularStrength * texture(material.specularTexture, retTexCoord).rgb * light[i].specularColor;
 
