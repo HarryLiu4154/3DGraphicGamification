@@ -3,12 +3,20 @@
 Camera::Camera()
 {
 	m_projection = {  };
-	m_view = {  };
+	m_view = glm::mat4();
+	m_position = {  };
+	m_lookAt = glm::vec3();
+	m_rotation = glm::vec3();
+	m_angle = 0;
 }
 
 Camera::Camera(Resolution _screenResolution)
 {
-	m_position = { 2, 2, 2 };
+	m_position = { 0, 0, 0 };
+	m_lookAt = { 0, 0, 0 };
+	m_rotation = { 0, 0, 0 };;
+	m_angle = 0;
+	
 
 	// Projection matrix : 45 degree Field of View, 16:9 ratio, display range : 0.1 unit <-> 1000 units
 	m_projection = glm::perspective(
@@ -23,7 +31,7 @@ Camera::Camera(Resolution _screenResolution)
 
 	// Camera matrix
 	m_view = glm::lookAt(
-		m_position, // Camera is at (2, 2, 2), in world space
+		m_position, // Camera is at (0, 0, 0), in world space
 		glm::vec3(0, 0, 0), // and looks at the origin
 		glm::vec3(0, 1, 0) // Head is up (set to 0, -1, 0 to look upside-down
 	);
@@ -32,4 +40,19 @@ Camera::Camera(Resolution _screenResolution)
 Camera::~Camera()
 {
 
+}
+
+void Camera::Rotate()
+{
+	// https://gamedev.stackexchange.com/questions/9607/moving-an-object-in-a-circular-path
+	m_angle += 0.1f;
+	m_lookAt.x = cos(glm::radians(m_angle)) * 100;
+	m_lookAt.z = sin(glm::radians(m_angle)) * 100;
+
+	// Camera matrix
+	m_view = glm::lookAt(
+		m_position,
+		m_lookAt,
+		glm::vec3(0, 1, 0) // Head is up ( Set to 0, 0, -1.0)
+	);
 }

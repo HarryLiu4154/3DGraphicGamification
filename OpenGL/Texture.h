@@ -15,6 +15,7 @@ class Texture
 
 		// Methods
 		void LoadTexture(string _fileName);
+		void LoadCubeMap(vector<std::string> _faces);
 		void CleanUp();
 
 	private:

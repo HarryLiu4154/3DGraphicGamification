@@ -27,7 +27,7 @@ string Mesh::Concat(string _s1, int _index, string _s2)
 	return (_s1 + index + _s2);
 }
 
-void Mesh::Cleanup()
+void Mesh::CleanUp()
 {
 	//glDeleteBuffers(1, &m_indexBuffer);
 	glDeleteBuffers(1, &m_vertexBuffer);

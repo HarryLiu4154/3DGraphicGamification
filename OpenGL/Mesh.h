@@ -24,7 +24,7 @@ class Mesh
 
 		// Methods
 		void Create(Shader* _shader, string _file);
-		void Cleanup();
+		void CleanUp();
 		void CalculateTransform();
 		void Render(glm::mat4 _pv);
 
