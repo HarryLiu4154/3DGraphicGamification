@@ -4,6 +4,7 @@ in vec3 retNormal;
 in vec2 retTexCoord;
 in vec3 retFragPos;
 in vec3 retViewDirection;
+in mat3 retTBN;
 
 out vec4 FragColor;
 
@@ -12,6 +13,7 @@ struct Material
 	float specularStrength;
 	sampler2D diffuseTexture;
 	sampler2D specularTexture;
+	sampler2D normalTexture;
 };
 
 struct Light
@@ -26,6 +28,7 @@ struct Light
 uniform Material material;
 #define NR_LIGHTS 1
 uniform Light light[NR_LIGHTS];
+uniform bool EnableNormalMap = false;
 
 void main() 
 {
@@ -40,6 +43,14 @@ void main()
 	for (int i = 0; i < NR_LIGHTS; i++) 
 	{
 		vec3 lightDir = normalize(light[i].position - retFragPos); // Normalize, for correct dot product results
+		
+		vec3 normal = retNormal;
+		if (EnableNormalMap == true) {
+			normal = texture(material.normalTexture, retTexCoord).rgb;
+			normal = normal * 2.0f - 1.0f;
+			normal = normalize(retTBN * normal);
+		}
+
 		float lambertianStrength = dot(lightDir, retNormal); // Add lambertian lighting
 		vec3 refl = reflect(-lightDir, retNormal);
 		float specularStrength = pow(max(dot(retViewDirection, refl), 0.0f), material.specularStrength);

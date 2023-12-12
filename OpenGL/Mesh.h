@@ -4,6 +4,7 @@
 
 #include "StandardIncludes.h"
 #include "Texture.h"
+#include "OBJ_Loader.h"
 
 class Shader;
 
@@ -23,7 +24,7 @@ class Mesh
 		void SetCameraPosition(glm::vec3 _cameraPosition) { m_cameraPosition = _cameraPosition; }
 
 		// Methods
-		void Create(Shader* _shader, string _file);
+		void Create(Shader* _shader, string _file, int _instanceCount = 1);
 		void CleanUp();
 		void CalculateTransform();
 		void Render(glm::mat4 _pv);
@@ -36,15 +37,24 @@ class Mesh
 		void SetShaderVariables(glm::mat4 _pv);
 		void BindAttributes();
 		string Concat(string _s1, int _index, string _s2);
+		string RemoveFolder(string _map);
+		void CalculateTangents(vector<objl::Vertex> _vertices, objl::Vector3& _tangent, objl::Vector3& _bitangent);
 
 		// Members
 		Shader* m_shader;
-		Texture m_texture;
-		Texture m_texture2;
+		Texture m_textureDiffuse;
+		Texture m_textureSpecular;
+		Texture m_textureNormal;
 		GLuint m_vertexBuffer; // GPU buffer (VRAM)
 		GLuint m_indexBuffer; // GPU buffer (VRAM)
+		GLuint m_instanceBuffer;
 		std::vector<GLfloat> m_vertexData; //  Store vertex data in RAM
 		std::vector<GLubyte> m_indexData; // Store index data in RAM
+		std::vector<GLfloat> m_instanceData; // Store instance data in RAM
+		bool m_enableNormalMap;
+		int m_instanceCount;
+		bool m_enableInstancing;
+		int m_elementSize;
 
 		// Transform
 		glm::vec3 m_position;
