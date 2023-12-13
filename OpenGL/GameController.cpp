@@ -63,19 +63,19 @@ void GameController::RunGame()
 	m.SetScale({ 0.01f, 0.01f, 0.01f });
 	Mesh::Lights.push_back(m);
 
-	Mesh cube = Mesh();
+	/*Mesh cube = Mesh();
 	cube.Create(&m_shaderDiffuse, "../Assets/Models/Cube.obj", 1000);
 	cube.SetCameraPosition(m_camera.GetPosition());
 	cube.SetScale({ 0.05f, 0.05f, 0.05f });
 	cube.SetPosition({ 0.0f, 0.0f, 0.0f });
-	m_meshes.push_back(cube);
+	m_meshes.push_back(cube);*/
 
-	/*Mesh fighter = Mesh();
-	fighter.Create(&m_shaderDiffuse, "Assets/Models/Fighter.obj");
+	Mesh fighter = Mesh();
+	fighter.Create(&m_shaderDiffuse, "../Assets/Models/Fighter.obj");
 	fighter.SetCameraPosition(m_camera.GetPosition());
 	fighter.SetScale({ 0.002f, 0.002f, 0.002f });
 	fighter.SetPosition({ 0.0f, 0.0f, 0.0f });
-	m_meshes.push_back(fighter);*/
+	m_meshes.push_back(fighter);
 
 	/* Mesh box = Mesh();
 	box.Create(&m_shaderDiffuse, "../Assets/Models/Cube.obj");
