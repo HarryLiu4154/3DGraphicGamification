@@ -8,6 +8,7 @@
 #include "Skybox.h"
 #include "WindowController.h"
 #include "Camera.h"
+#include "PostProcessor.h"
 
 class GameController : public Singleton<GameController>
 {
@@ -24,8 +25,10 @@ class GameController : public Singleton<GameController>
 		Shader m_shaderColor;
 		Shader m_shaderDiffuse;
 		Shader m_shaderFont;
+		Shader m_shaderPost;
 		//Shader m_shaderSkybox;
 		Camera m_camera;
+		PostProcessor m_postProcessor;
 		vector<Mesh> m_meshes;
 		Skybox m_skybox;
 		GLuint vao;

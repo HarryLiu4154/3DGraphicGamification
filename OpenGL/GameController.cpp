@@ -7,6 +7,8 @@ GameController::GameController()
 {
 	m_shaderColor = { };
 	m_shaderDiffuse = { };
+	m_shaderFont = { };
+	m_shaderPost = { };
 	m_camera = { };
 	m_meshes.clear(); // Not really needed but can't hurt
 }
@@ -21,8 +23,8 @@ void GameController::Initialize()
 	M_ASSERT(glewInit() == GLEW_OK, "Failed to initialize GLEW."); // Initialize GLEW
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE); // Ensure we can capture the escape key
 	//glClearColor(0.0f, 0.0f, 0.4f, 0.0f); // Dark blue background
-	//glClearColor(0.0f, 0.0f, 0.0f, 0.0f); // Black background
-	glClearColor(0.1f, 0.1f, 0.1f, 0.0f); // Grey background
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f); // Black background
+	//glClearColor(0.1f, 0.1f, 0.1f, 0.0f); // Grey background
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -33,7 +35,9 @@ void GameController::Initialize()
 	glBindVertexArray(vao);
 
 	// Create a default perspective camera
-	m_camera = Camera(WindowController::GetInstance().GetResolution());
+	Resolution r = WindowController::GetInstance().GetResolution();
+	glViewport(0, 0, r.m_width, r.m_height);
+	m_camera = Camera(r);
 }
 
 void GameController::RunGame()
@@ -52,6 +56,8 @@ void GameController::RunGame()
 	//m_shaderSkybox.LoadShaders("Skybox.vertexshader", "Skybox.fragmentshader");
 	m_shaderFont = Shader();
 	m_shaderFont.LoadShaders("Font.vertexshader", "Font.fragmentshader");
+	m_shaderPost = Shader();
+	m_shaderPost.LoadShaders("PostProcessor.vertexshader", "PostProcessor.fragmentshader");
 #pragma endregion SetupShaders
 
 #pragma region CreateMeshes
@@ -63,19 +69,19 @@ void GameController::RunGame()
 	m.SetScale({ 0.01f, 0.01f, 0.01f });
 	Mesh::Lights.push_back(m);
 
-	/*Mesh cube = Mesh();
-	cube.Create(&m_shaderDiffuse, "../Assets/Models/Cube.obj", 1000);
+	Mesh cube = Mesh();
+	cube.Create(&m_shaderDiffuse, "../Assets/Models/Cube.obj", 10);
 	cube.SetCameraPosition(m_camera.GetPosition());
-	cube.SetScale({ 0.05f, 0.05f, 0.05f });
+	cube.SetScale({ 0.1f, 0.1f, 0.1f });
 	cube.SetPosition({ 0.0f, 0.0f, 0.0f });
-	m_meshes.push_back(cube);*/
+	m_meshes.push_back(cube);
 
-	Mesh fighter = Mesh();
+	/*Mesh fighter = Mesh();
 	fighter.Create(&m_shaderDiffuse, "../Assets/Models/Fighter.obj");
 	fighter.SetCameraPosition(m_camera.GetPosition());
 	fighter.SetScale({ 0.002f, 0.002f, 0.002f });
 	fighter.SetPosition({ 0.0f, 0.0f, 0.0f });
-	m_meshes.push_back(fighter);
+	m_meshes.push_back(fighter); */
 
 	/* Mesh box = Mesh();
 	box.Create(&m_shaderDiffuse, "../Assets/Models/Cube.obj");
@@ -105,7 +111,9 @@ void GameController::RunGame()
 #pragma endregion CreateMeshes
 
 	Fonts f = Fonts();
-	f.Create(&m_shaderFont, "arial.ttf", 100);
+	f.Create(&m_shaderFont, "arial.ttf", 40);
+	m_postProcessor = PostProcessor();
+	m_postProcessor.Create(&m_shaderPost);
 
 #pragma region Render
 	GLFWwindow* win = WindowController::GetInstance().GetWindow();
@@ -115,14 +123,7 @@ void GameController::RunGame()
 	do {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear the screen and depth buffer
 
-		double currentTime = glfwGetTime();
-		fps++;
-		if (currentTime - lastTime >= 1.0) {
-			fpsS = "FPS: " + to_string(fps);
-			fps = 0;
-			lastTime += 1.0;
-		}
-		f.RenderText(fpsS, 100, 100, 0.5f, { 1.0f, 1.0f, 0.0f });
+		m_postProcessor.Start();
 
 		//m_camera.Rotate();
 		//glm::mat4 view = glm::mat4(glm::mat3(m_camera.GetView()));
@@ -135,6 +136,16 @@ void GameController::RunGame()
 		for (unsigned int count = 0; count < Mesh::Lights.size(); ++count) {
 			Mesh::Lights[count].Render(m_camera.GetProjection() * m_camera.GetView());
 		}
+
+		double currentTime = glfwGetTime();
+		fps++;
+		if (currentTime - lastTime >= 1.0) {
+			fpsS = "FPS: " + to_string(fps);
+			fps = 0;
+			lastTime += 1.0;
+		}
+		m_postProcessor.End();
+		f.RenderText(fpsS, 100, 100, 0.5f, { 1.0f, 1.0f, 0.0f });
 
 		glfwSwapBuffers(win); // Swap the front and back buffers
 		glfwPollEvents();
@@ -149,9 +160,13 @@ void GameController::RunGame()
 	for (unsigned int count = 0; count < m_meshes.size(); ++count) {
 		m_meshes[count].CleanUp();
 	}
+	f.CleanUp();
+	m_postProcessor.CleanUp();
 	//skybox.CleanUp();
 	m_shaderDiffuse.CleanUp();
 	m_shaderColor.CleanUp();
+	m_shaderFont.CleanUp();
 	//m_shaderSkybox.CleanUp();
+	m_shaderPost.CleanUp();
 #pragma endregion Cleanup
 }
